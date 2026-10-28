@@ -1,0 +1,384 @@
+{
+  "address": "DMqKGbqScoY1vUAf5ZHos4LDxFUmtbhai7zpAKUUKJX8",
+  "metadata": {
+    "name": "bounty_board",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "approve_bounty",
+      "discriminator": [
+        159,
+        69,
+        100,
+        84,
+        88,
+        57,
+        93,
+        29
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "signer": true,
+          "relations": [
+            "bounty"
+          ]
+        },
+        {
+          "name": "bounty",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  117,
+                  110,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bounty.creator",
+                "account": "Bounty"
+              },
+              {
+                "kind": "account",
+                "path": "bounty.id",
+                "account": "Bounty"
+              }
+            ]
+          }
+        },
+        {
+          "name": "worker",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_bounty",
+      "discriminator": [
+        122,
+        90,
+        14,
+        143,
+        8,
+        125,
+        200,
+        2
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "bounty",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  117,
+                  110,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "arg",
+                "path": "id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "id",
+          "type": "u64"
+        },
+        {
+          "name": "reward_lamports",
+          "type": "u64"
+        },
+        {
+          "name": "deadline",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "refund_bounty",
+      "discriminator": [
+        167,
+        234,
+        121,
+        108,
+        247,
+        216,
+        216,
+        124
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "bounty"
+          ]
+        },
+        {
+          "name": "bounty",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  117,
+                  110,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              },
+              {
+                "kind": "account",
+                "path": "bounty.id",
+                "account": "Bounty"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "submit_work",
+      "discriminator": [
+        158,
+        80,
+        101,
+        51,
+        114,
+        130,
+        101,
+        253
+      ],
+      "accounts": [
+        {
+          "name": "worker",
+          "signer": true
+        },
+        {
+          "name": "bounty",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  111,
+                  117,
+                  110,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bounty.creator",
+                "account": "Bounty"
+              },
+              {
+                "kind": "account",
+                "path": "bounty.id",
+                "account": "Bounty"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "submission_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Bounty",
+      "discriminator": [
+        237,
+        16,
+        105,
+        198,
+        19,
+        69,
+        242,
+        234
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidReward",
+      "msg": "The reward must be greater than zero"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidDeadline",
+      "msg": "The deadline must be in the future"
+    },
+    {
+      "code": 6002,
+      "name": "BountyNotOpen",
+      "msg": "This bounty is not open for submissions"
+    },
+    {
+      "code": 6003,
+      "name": "CreatorCannotSubmit",
+      "msg": "The creator cannot submit work to their own bounty"
+    },
+    {
+      "code": 6004,
+      "name": "SubmissionMissing",
+      "msg": "The bounty has no worker submission to approve"
+    },
+    {
+      "code": 6005,
+      "name": "WorkerMismatch",
+      "msg": "The supplied worker is not the bounty's submitter"
+    },
+    {
+      "code": 6006,
+      "name": "EscrowUnderfunded",
+      "msg": "The bounty escrow cannot cover this payout while preserving rent"
+    },
+    {
+      "code": 6007,
+      "name": "ArithmeticOverflow",
+      "msg": "The lamport balance calculation overflowed"
+    },
+    {
+      "code": 6008,
+      "name": "DeadlineNotReached",
+      "msg": "The bounty deadline has not passed"
+    },
+    {
+      "code": 6009,
+      "name": "BountyExpired",
+      "msg": "The bounty deadline has passed"
+    }
+  ],
+  "types": [
+    {
+      "name": "Bounty",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "worker",
+            "type": "pubkey"
+          },
+          {
+            "name": "reward_lamports",
+            "type": "u64"
+          },
+          {
+            "name": "deadline",
+            "type": "i64"
+          },
+          {
+            "name": "submission_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "BountyStatus"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "BountyStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Submitted"
+          },
+          {
+            "name": "Paid"
+          },
+          {
+            "name": "Refunded"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "BOUNTY_SEED",
+      "type": "bytes",
+      "value": "[98, 111, 117, 110, 116, 121]"
+    }
+  ]
+}
