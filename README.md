@@ -55,6 +55,8 @@ Open ── worker submits before deadline ──> Submitted ── creator appr
 
 The current program has no reject, dispute, or resubmission instruction. A submitted bounty can be approved and paid; the expired-bounty refund is available only while its status is still `Open`.
 
+Approval is controlled solely by the bounty creator. There is no independent judge, arbitration process, or on-chain timeout that releases funds after a submission. If the creator does not approve submitted work, the reward remains escrowed under the current program rules. This is a known limitation of the Devnet MVP, not a complete dispute-resolution design.
+
 ## On-chain program
 
 - **Program ID:** `DMqKGbqScoY1vUAf5ZHos4LDxFUmtbhai7zpAKUUKJX8`
@@ -210,10 +212,11 @@ The Devnet demo flow has been exercised with separate creator and worker wallets
 ## Known limitations and production notes
 
 - This is a Devnet prototype. It is not audited and must not be treated as production-ready or used with mainnet funds.
+- The project has not been tested or deployed for mainnet use. A Devnet deployment and successful demo flow do not establish mainnet readiness.
 - The API currently binds to localhost, allows only the local Next.js origin, and stores metadata in a local SQLite file. It is not publicly hosted or configured for multi-instance production use.
 - The title, description, and proof URL are API/SQLite metadata, not on-chain data. The proof URL hash is on-chain; the linked content itself is not uploaded or verified by this project.
 - Public API reads do not require authentication. Write signatures authenticate the creator or worker for metadata writes, but do not replace HTTPS, rate limiting, deployment hardening, monitoring, or a security audit.
-- There is no reject, dispute, or resubmission flow for submitted work. A bounty that reaches `Submitted` cannot use the current open-bounty refund instruction.
+- The creator alone decides whether submitted work is approved. There is no independent judge, reject, dispute, arbitration, or resubmission flow. A bounty that reaches `Submitted` cannot use the current open-bounty refund instruction, so unapproved submissions can leave the reward escrowed indefinitely under the current program rules.
 - The API uses a public Devnet RPC by default. Public deployments should use an appropriately configured RPC endpoint and persistent storage.
 
 ## License
